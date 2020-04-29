@@ -21,6 +21,17 @@ A Java library containing classes to help ease the pain of testing Java EE appli
 
 > An ExecutorService that executes tasks immediately in the calling thread during submit.
 
+### Maven
+
+Add the dependency to your Maven pom.xml
+
+```xml
+<dependency>
+  <groupId>dk.dbc</groupId>
+  <artifactId>dbc-commons-testee</artifactId>
+  <version>1.1-SNAPSHOT</version>
+</dependency>
+```
 ### development
 
 **Requirements**
