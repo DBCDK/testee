@@ -5,15 +5,21 @@
 
 package dk.dbc.testee;
 
-import javax.enterprise.concurrent.ManagedExecutorService;
+import jakarta.enterprise.concurrent.ContextService;
+import jakarta.enterprise.concurrent.ManagedExecutorService;
+import jakarta.ws.rs.NotSupportedException;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
 /**
  * A ManagedExecutorImplementation which delegates its operations to a
@@ -95,5 +101,56 @@ public class NonContainerManagedExecutorService implements ManagedExecutorServic
     @Override
     public void execute(Runnable command) {
         executorService.execute(command);
+    }
+
+
+    @Override
+    public <U> CompletableFuture<U> completedFuture(U u) {
+        throw new NotSupportedException();
+    }
+
+    @Override
+    public <U> CompletionStage<U> completedStage(U u) {
+        throw new NotSupportedException();
+    }
+
+    @Override
+    public <T> CompletableFuture<T> copy(CompletableFuture<T> completableFuture) {
+        return completableFuture.copy();
+    }
+
+    @Override
+    public <T> CompletionStage<T> copy(CompletionStage<T> completionStage) {
+        throw new NotSupportedException();
+    }
+
+    @Override
+    public <U> CompletableFuture<U> failedFuture(Throwable throwable) {
+        throw new NotSupportedException();
+    }
+
+    @Override
+    public <U> CompletionStage<U> failedStage(Throwable throwable) {
+        throw new NotSupportedException();
+    }
+
+    @Override
+    public ContextService getContextService() {
+        throw new NotSupportedException();
+    }
+
+    @Override
+    public <U> CompletableFuture<U> newIncompleteFuture() {
+        throw new NotSupportedException();
+    }
+
+    @Override
+    public CompletableFuture<Void> runAsync(Runnable runnable) {
+        throw new NotSupportedException();
+    }
+
+    @Override
+    public <U> CompletableFuture<U> supplyAsync(Supplier<U> supplier) {
+        throw new NotSupportedException();
     }
 }
