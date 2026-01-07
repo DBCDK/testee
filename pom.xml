@@ -11,9 +11,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>dbc-commons-testee</artifactId>
-  <version>2.0-SNAPSHOT</version>
-  <groupId>dk.dbc</groupId>
-  <name>dbc-commons-testee</name>
+  <version>21.0-SNAPSHOT</version>
 
   <repositories>
     <repository>
@@ -25,7 +23,7 @@
   <parent>
     <groupId>dk.dbc</groupId>
     <artifactId>super-pom</artifactId>
-    <version>java11-SNAPSHOT</version>
+    <version>java21-SNAPSHOT</version>
     <relativePath/>
   </parent>
 
