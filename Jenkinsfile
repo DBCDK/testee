@@ -1,19 +1,12 @@
 #!groovy
 
-def workerNode = "devel11"
+def workerNode = "devel12"
 
 pipeline {
 	agent {label workerNode}
-	triggers {
-		pollSCM("H/03 * * * *")
-	}
 	options {
 		timestamps()
 	}
-	tools {
-		jdk 'jdk11'
-        maven "Maven 3"
-    }
 	stages {
 		stage("clear workspace") {
 			steps {
@@ -21,32 +14,54 @@ pipeline {
 				checkout scm
 			}
 		}
-		stage("verify") {
-			steps {
-				sh "mvn verify pmd:pmd"
-				//junit "target/surefire-reports/TEST-*.xml"
-			}
-		}
-		stage("warnings") {
-			agent {label workerNode}
-			steps {
-				warnings consoleParsers: [
-					[parserName: "Java Compiler (javac)"]
-				],
-					unstableTotalAll: "0",
-					failedTotalAll: "0"
-			}
-		}
-		stage("pmd") {
-			agent {label workerNode}
-			steps {
-				step([$class: 'hudson.plugins.pmd.PmdPublisher',
-					  pattern: 'target/pmd.xml',
-					  unstableTotalAll: "0",
-					  failedTotalAll: "0"])
-			}
-		}
-		stage("deploy") {
+        stage("build") {
+            steps {
+                withSonarQubeEnv(installationName: 'sonarqube.dbc.dk') {
+                    script {
+                        def status = sh returnStatus: true, script:  """
+                            rm -rf \$WORKSPACE/.repo/dk/dbc
+                            mvn -B -Dmaven.repo.local=\$WORKSPACE/.repo --no-transfer-progress clean
+                            mvn -B -Dmaven.repo.local=\$WORKSPACE/.repo --no-transfer-progress verify
+                        """
+
+                        def sonarOptions = "-Dsonar.branch.name=$BRANCH_NAME"
+                        if (env.BRANCH_NAME != 'master') {
+                            sonarOptions += " -Dsonar.newCode.referenceBranch=master"
+                        }
+
+                        status += sh returnStatus: true, script: """
+                            mvn -B -Dmaven.repo.local=$WORKSPACE/.repo --no-transfer-progress $sonarOptions sonar:sonar
+                        """
+
+                        //junit testResults: '**/target/surefire-reports/TEST-*.xml'
+
+                        if (status != 0) {
+                            error("build failed")
+                        }
+                    }
+                }
+            }
+        }
+        stage("quality gate") {
+            steps {
+                // wait for analysis results
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        stage("supply-chain gate") {
+            steps {
+                script {
+                    dependencyTrackGate(
+                        projectBom:  'target/sbom-java.json',
+                        projectTeam: 'de-team',
+                        projectType: 'java'
+                    )
+                }
+            }
+        }
+		stage("publish") {
 			when {
 				branch "master"
 			}

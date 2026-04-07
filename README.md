@@ -29,16 +29,11 @@ Add the dependency to your Maven pom.xml
 <dependency>
   <groupId>dk.dbc</groupId>
   <artifactId>dbc-commons-testee</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>21.3.0-SNAPSHOT</version>
 </dependency>
 ```
 ### development
 
 **Requirements**
 
-To build this project JDK 1.8 or higher and Apache Maven is required.
-
-### License
-
-Copyright Dansk Bibliotekscenter a/s. Licensed under GPLv3.
-See license text in LICENSE.txt
+To build this project JDK 21 or higher and Apache Maven is required.

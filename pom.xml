@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Copyright Dansk Bibliotekscenter a/s. Licensed under GNU GPLv3
-  ~ See license text in LICENSE.txt
-  -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -11,21 +6,20 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>dbc-commons-testee</artifactId>
-  <version>2.0-SNAPSHOT</version>
-  <groupId>dk.dbc</groupId>
   <name>dbc-commons-testee</name>
+  <version>21.3.0-SNAPSHOT</version>
 
   <repositories>
     <repository>
       <id>mavenrepo.dbc.dk</id>
-      <url>https://mavenrepo.dbc.dk/nexus/content/groups/public</url>
+      <url>https://mavenrepo.dbc.dk/content/groups/public</url>
     </repository>
   </repositories>
 
   <parent>
     <groupId>dk.dbc</groupId>
     <artifactId>super-pom</artifactId>
-    <version>java11-SNAPSHOT</version>
+    <version>java21-SNAPSHOT</version>
     <relativePath/>
   </parent>
 
@@ -33,8 +27,6 @@
     <dependency>
       <groupId>jakarta.platform</groupId>
       <artifactId>jakarta.jakartaee-api</artifactId>
-      <version>10.0.0</version>
-      <scope>provided</scope>
     </dependency>
   </dependencies>
 </project>
